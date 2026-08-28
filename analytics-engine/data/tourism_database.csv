@@ -1,0 +1,4 @@
+tourist_id,origin,destination,preferred_mode,timestamp
+T001,Delhi,Jaipur,train,2026-08-28T08:00:00
+T002,Mumbai,Agra,flight,2026-08-28T08:00:00
+T003,Bengaluru,Varanasi,bus,2026-08-28T08:00:00
