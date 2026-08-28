@@ -3,6 +3,8 @@ from modules.capacity import CapacityModel
 from modules.risk import RiskModel
 from modules.prediction import PredictionModel
 from modules.alerts import AlertSystem
+from modules.rerouting import ReroutingEngine
+from modules.recommendation import RecommendationEngine
 
 
 # ----------------------------
@@ -81,6 +83,29 @@ alerts_result = alert_system.generate_alerts(
         prediction_result["congestion_probability"]
 )
 
+rerouting_engine = ReroutingEngine(
+    "data/gate_capacity.csv",
+    "data/gate_status.csv"
+)
+
+rerouting_result = (
+    rerouting_engine.get_recommendation(
+        clean_data["gate_no"]
+    )
+)
+
+recommendation_engine = RecommendationEngine(
+    "data/tourism_database.csv"
+)
+
+recommendation_result = (
+    recommendation_engine.get_recommendations(
+        prediction_result[
+            "congestion_probability"
+        ]
+    )
+)
+
 
 # ----------------------------
 # TEMPORARY FINAL OUTPUT
@@ -107,15 +132,22 @@ final_output = {
 
     "alerts": alerts_result,
 
-    "internal_rerouting": {},
+    "internal_rerouting": rerouting_result,
 
-    "external_recommendations": {},
+    "external_recommendations":  recommendation_result[
+        "external_recommendations"
+    ],
 
     "recommended_visit_time":
-        None,
+        recommendation_result[
+        "recommended_visit_time"
+    ],
 
     "recommended_action":
-        None
+        (
+        f"Redirect visitors to "
+        f"{rerouting_result['recommended_gate']}"
+    )
 }
 
 print(final_output)
