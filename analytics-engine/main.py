@@ -1,22 +1,12 @@
-from modules.capacity import CapacityModel
-from modules.risk import RiskModel
+from modules.prediction import PredictionModel
 
-capacity_model = CapacityModel(
-    "data/gate_capacity.csv"
+prediction_model = PredictionModel(
+    "data/historical_crowd.csv"
 )
 
-risk_model = RiskModel()
-
-capacity_result = (
-    capacity_model.calculate_capacity_utilization(
-        crowd_number=180,
-        gate_no="Gate_A"
-    )
+result = prediction_model.get_prediction_output(
+    gate_no="Gate_A",
+    gate_capacity=250
 )
 
-risk_result = risk_model.calculate_risk(
-    capacity_result["capacity_utilization"]
-)
-
-print("Capacity:", capacity_result)
-print("Risk:", risk_result)
+print(result)
