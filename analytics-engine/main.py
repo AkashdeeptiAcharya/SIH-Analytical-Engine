@@ -1,15 +1,22 @@
-from modules.capacity import estimate_capacity
-from modules.risk import compute_risk
-from modules.realtime import realtime_dashboard
+from modules.capacity import CapacityModel
+from modules.risk import RiskModel
 
+capacity_model = CapacityModel(
+    "data/gate_capacity.csv"
+)
 
-def main() -> None:
-    """Entry point for the analytics engine."""
-    print("Analytics engine started.")
-    print("Capacity:", estimate_capacity())
-    print("Risk:", compute_risk())
-    realtime_dashboard()
+risk_model = RiskModel()
 
+capacity_result = (
+    capacity_model.calculate_capacity_utilization(
+        crowd_number=180,
+        gate_no="Gate_A"
+    )
+)
 
-if __name__ == "__main__":
-    main()
+risk_result = risk_model.calculate_risk(
+    capacity_result["capacity_utilization"]
+)
+
+print("Capacity:", capacity_result)
+print("Risk:", risk_result)
